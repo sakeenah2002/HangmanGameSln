@@ -12,7 +12,7 @@ namespace Hangman.Core.Game
         private string _progress;
        
         private int bodyparts;
-        private string[] _wordArray = { "twenty" };//, "random", "education", "population", "champagne", "breakfast", "chocolate", "landscape", "ritual", "professional", "lesson", "cruel", "crime", "prisoner", "shareholder", " pyramid", " vampire", "werewolf", "mermaid", "demigod", "queen", "reign", "fairy", " bisexual", "asexual", "lesbian", "transgender" };
+        private string[] _wordArray = { "twenty", "random", "education", "population", "champagne", "breakfast", "chocolate", "landscape", "ritual", "professional", "lesson", "cruel", "crime", "prisoner", "shareholder", " pyramid", " vampire", "werewolf", "mermaid", "demigod", "queen", "reign", "fairy", " bisexual", "asexual", "lesbian", "transgender" };
 
 
         public HangmanGame()
@@ -66,15 +66,18 @@ namespace Hangman.Core.Game
 
                 Console.SetCursorPosition(0, 13);
                 Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("CLUE ! word amount " + _progress.Length);              
                 Console.Write("Amount of letters in the word : ");
-                Console.WriteLine(_progress.Length);
+                Console.WriteLine(Getprogress());
                 Console.SetCursorPosition(0, 15);
 
                 Console.ForegroundColor = ConsoleColor.Green;
 
                 Console.Write("What is your next guess: ");
-                var nextGuess = Console.ReadLine();
+                string nextGuess = Console.ReadLine();
                 Console.WriteLine(_progress);
+
+                progressArray(nextGuess[0]);
 
                        
                 if (bodyparts == 0)
@@ -84,18 +87,17 @@ namespace Hangman.Core.Game
                     Console.WriteLine("Please enter next guess:");
                     string nextguess = Console.ReadLine();
 
-                    progressArray(nextguess[0]);
 
                     Console.WriteLine(_progress);
                 }
                 for (int i = 0; i < _yourguesswords.Length; i++)
                 {
 
-                    if (_yourguesswords.Contains(_progress))
+                    if (_yourguesswords.Contains(nextGuess))
                     {
 
                     }
-                    else if (!_yourguesswords.Contains(_progress))
+                    else if (!_yourguesswords.Contains(nextGuess))
                     {
                         bodyparts--;
 
@@ -103,6 +105,22 @@ namespace Hangman.Core.Game
                     }
 
                 }
+                if (_progress == _yourguesswords)
+                {
+                    Console.SetCursorPosition(0, 18);
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"You Win! The word was {_yourguesswords}. congrates nice one :)");
+                    play = false;
+                }
+                if (bodyparts == 0)
+                {
+                    _renderer.Render(5, 5, 0);
+                    Console.SetCursorPosition(0, 18);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"You Lose! The word was {_yourguesswords}, better luck next time :(");
+                    play = false;
+                }
+
             }
                
                                      
